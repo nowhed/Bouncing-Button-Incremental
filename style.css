@@ -1,0 +1,18 @@
+.buttonContainer {
+    height: 400px;
+    width: 500px;
+    border: 2px solid black;
+}
+
+#movingButton {
+    width: 30px;
+    height: 30px;
+    user-select: none;
+    /* Standard */
+}
+
+.barContainer {
+    width: 20%;
+    height: 18px;
+    background-color: grey
+}
