@@ -47,7 +47,7 @@ function buy(item) {
                 addPoints(-1 * Math.floor(Math.pow(1.65, upgradesBaught[2])))
                 upgradesBaught[2]++
                     stunDuration = Math.pow(stunDuration, 1.014)
-                document.getElementById('stunDuration').innerHTML = (stunDuration / 1000).toFixed(1)
+                document.getElementById('stunDuration').innerHTML = (stunDuration / 1000).toFixed(2)
             }
             var newCost = Math.floor(Math.pow(1.65, upgradesBaught[2]))
             break;
