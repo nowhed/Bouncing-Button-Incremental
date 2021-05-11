@@ -1,2 +1,6 @@
 # Bouncing Button Incremental
- bounce bounce bounce
+click button to get points
+
+points -> upgrades
+
+upgrades -> more points
