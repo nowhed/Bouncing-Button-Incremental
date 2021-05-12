@@ -122,7 +122,7 @@ function cursorEvents() {
             }
             cursors[i][2]++
         } else {
-            cursors[i][2] = Math.floor(100 / (cspeedX * cspeedY))
+            cursors[i][2] = Math.floor(100 / cursorSpeed)
         }
     }
 }
