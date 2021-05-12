@@ -1,7 +1,7 @@
 var points = 0;
-var buttonSpeed = 18;
+var buttonSpeed = 24;
 var upgradesBaught = [1, 1, 1, 1, 1, 1, 1];
-var stunDuration = 500; // 0.5s
+var stunDuration = 700; // 0.5s
 var stunCooldown = 7000; // 7s + the stun duration, 7 seconds so platers aren't too reliant on it
 var pointsValue = 1;
 var buttonSize = 30;
@@ -118,7 +118,3 @@ function stunButton() {
         }
     }
 }
-
-setTimeout(() => {
-    save()
-}, 15000); //save every 15s

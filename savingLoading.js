@@ -34,3 +34,7 @@ function load() {
     document.getElementById('stunDuration').innerHTML = (stunDuration / 1000).toFixed(2)
     console.log('Loaded! ' + localStorage.getItem("save"))
 }
+
+setTimeout(() => {
+    save()
+}, 15000); //save every 15s
