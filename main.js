@@ -8,6 +8,7 @@ var buttonSize = 30;
 var cursors = [
     //x, y, clickprogress, random factor x, random factor 
 ]
+load();
 var cursorSpeed = 1.5
 let canvasSize = {
     x: 700,

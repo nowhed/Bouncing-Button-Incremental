@@ -10,7 +10,7 @@ function save() {
         cursors: JSON.stringify(cursors)
     }
     localStorage.setItem("save", JSON.stringify(save));
-    console.log('Saved! ' + save)
+    console.log('Saved! ' + JSON.stringify(save))
 }
 
 function load() {
@@ -32,5 +32,5 @@ function load() {
     document.getElementById('valueCost').innerHTML = Math.floor(10 * Math.pow(upgradesBaught[4], 1.4))
     document.getElementById('cursorCost').innerHTML = Math.floor(15 * Math.pow(upgradesBaught[5], 1.15))
     document.getElementById('stunDuration').innerHTML = (stunDuration / 1000).toFixed(2)
-    console.log('Loaded! ' + savegame)
+    console.log('Loaded! ' + localStorage.getItem("save"))
 }

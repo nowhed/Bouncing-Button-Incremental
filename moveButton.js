@@ -106,17 +106,17 @@ function cursorEvents() {
             cursors[i][1] >= rect.y &&
             cursors[i][1] <= rect.y + buttonSize * 6 * scale) {
             //increase the "cursor click progress" by 1
-            if (cursors[i][2] % Math.floor(100 / (cspeedX * cspeedY)) === 0) { //got a click!
+            if (cursors[i][2] % Math.floor(100 / cursorSpeed) === 0) { //got a click!
                 addPoints(pointsValue)
                 plusTexts.push([rect.x, rect.y, 1])
                     //give a little bonus to this cursor's speed, as a reward
-                cursors[i][3] = Math.pow(cursors[i][3], 1.05)
-                cursors[i][4] = Math.pow(cursors[i][4], 1.05)
+                cursors[i][3] = Math.pow(cursors[i][3], 1.025)
+                cursors[i][4] = Math.pow(cursors[i][4], 1.025)
                     //if a cursor is faster than the button, penalize it.
-                if (toButtonX * cursorSpeed * cursors[i][3] >= Math.abs(rect.xspeed)) {
+                if (toButtonX * cspeedX >= Math.abs(rect.xspeed)) {
                     cursors[i][3] = Math.pow(cursors[i][3], 0.8)
                 }
-                if (toButtonY * cursorSpeed * cursors[i][4] >= Math.abs(rect.yspeed)) {
+                if (toButtonY * cspeedY >= Math.abs(rect.yspeed)) {
                     cursors[i][4] = Math.pow(cursors[i][4], 0.8)
                 }
             }
