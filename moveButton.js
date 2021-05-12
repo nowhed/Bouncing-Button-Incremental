@@ -20,7 +20,6 @@ var rect = {
     yspeed: 120 / buttonSpeed,
     color: '#383838'
 };
-
 (function main() {
     canvas = document.getElementById("buttonCanvas");
     ctx = canvas.getContext("2d");
@@ -110,15 +109,10 @@ function cursorEvents() {
                 addPoints(pointsValue)
                 plusTexts.push([rect.x, rect.y, 1])
                     //give a little bonus to this cursor's speed, as a reward
-                cursors[i][3] += cursors[i][3] * 0.02 * cursorSpeed
-                cursors[i][4] += cursors[i][4] * 0.02 * cursorSpeed
+                    // sigmoid. 360 * buttonspeed /E^-0.3*cursor speed
+                cursors[i][3] = (360 * (Math.random() * (1.1 - 0.9) + 0.9) / buttonSpeed * 0.07 + 0.09) / 0.145 + Math.pow(Math.E, -0.3 * cursors[i][3]) - cursorSpeed
+                cursors[i][4] = (360 * (Math.random() * (1.1 - 0.9) + 0.9) / buttonSpeed * 0.07 + 0.09) / 0.145 + Math.pow(Math.E, -0.3 * cursors[i][4]) - cursorSpeed
                     //if a cursor is faster than the button, penalize it.
-                if (toButtonX * cspeedX >= Math.abs(rect.xspeed) / 1.5) {
-                    cursors[i][3] -= cursors[i][3] / 4
-                }
-                if (toButtonY * cspeedY >= Math.abs(rect.yspeed) / 1.5) {
-                    cursors[i][4] -= cursors[i][4] / 4
-                }
             }
             cursors[i][2]++
         } else {

@@ -31,8 +31,8 @@ function load() {
         document.getElementById('sizeCost').innerHTML = Math.floor(Math.pow(3.2113, upgradesBaught[1]));
         document.getElementById('stunTimeCost').innerHTML = Math.floor(Math.pow(1.65, upgradesBaught[2]))
         document.getElementById('stunCooldownCost').innerHTML = Math.floor(Math.pow(1.7, upgradesBaught[3]))
-        document.getElementById('valueCost').innerHTML = Math.floor(10 * Math.pow(upgradesBaught[4], 4.25))
-        document.getElementById('cursorCost').innerHTML = Math.floor(20 * Math.pow(upgradesBaught[5], 1.4))
+        document.getElementById('valueCost').innerHTML = Math.floor(10 * Math.pow(upgradesBaught[4], 3.8))
+        document.getElementById('cursorCost').innerHTML = Math.floor(20 * Math.pow(upgradesBaught[5], 1.2))
         document.getElementById('cursorSpeedCost').innerHTML = Math.floor(12 * Math.pow(upgradesBaught[6], 1.5))
         document.getElementById('stunDuration').innerHTML = (stunDuration / 1000).toFixed(2)
     }
