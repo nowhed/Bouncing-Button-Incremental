@@ -1,4 +1,4 @@
-var points = 50;
+var points = 0;
 var buttonSpeed = 18;
 var upgradesBaught = [1, 1, 1, 1, 1, 1, 1];
 var stunDuration = 500; // 0.5s
