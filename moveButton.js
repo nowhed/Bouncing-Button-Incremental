@@ -106,7 +106,7 @@ function cursorEvents() {
             cursors[i][1] >= rect.y &&
             cursors[i][1] <= rect.y + buttonSize * 6 * scale) {
             //increase the "cursor click progress" by 1
-            if (cursors[i][2] % (100 / (cspeedX * cspeedY)) === 0) { //got a click!
+            if (cursors[i][2] % Math.floor(100 / (cspeedX * cspeedY)) === 0) { //got a click!
                 addPoints(pointsValue)
                 plusTexts.push([rect.x, rect.y, 1])
                     //give a little bonus to this cursor's speed, as a reward
@@ -122,7 +122,7 @@ function cursorEvents() {
             }
             cursors[i][2]++
         } else {
-            cursors[i][2] = (100 / (cspeedX * cspeedY))
+            cursors[i][2] = Math.floor(100 / (cspeedX * cspeedY))
         }
     }
 }
