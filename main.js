@@ -1,7 +1,7 @@
 var points = 0;
-var buttonSpeed = 24;
+var buttonSpeed = 26;
 var upgradesBaught = [1, 1, 1, 1, 1, 1, 1];
-var stunDuration = 700; // 0.5s
+var stunDuration = 700; // 0.7s
 var stunCooldown = 7000; // 7s + the stun duration, 7 seconds so platers aren't too reliant on it
 var pointsValue = 1;
 var buttonSize = 30;
@@ -56,12 +56,12 @@ function buy(item) {
             var newCost = Math.floor(Math.pow(1.7, upgradesBaught[3]))
             break;
         case "value":
-            if (points >= Math.floor(10 * Math.pow(upgradesBaught[4], 3.6))) {
-                addPoints(-1 * Math.floor(10 * Math.pow(upgradesBaught[4], 3.6)))
+            if (points >= Math.floor(10 * Math.pow(upgradesBaught[4], 4.25))) {
+                addPoints(-1 * Math.floor(10 * Math.pow(upgradesBaught[4], 4.25)))
                 upgradesBaught[4]++
                     pointsValue += pointsValue;
             }
-            var newCost = Math.floor(10 * Math.pow(upgradesBaught[4], 3.6))
+            var newCost = Math.floor(10 * Math.pow(upgradesBaught[4], 4.25))
             break;
         case "cursor":
             if (points >= Math.floor(20 * Math.pow(upgradesBaught[5], 1.4))) {
@@ -75,7 +75,7 @@ function buy(item) {
             if (points >= Math.floor(12 * Math.pow(upgradesBaught[6], 1.5))) {
                 addPoints(-1 * Math.floor(12 * Math.pow(upgradesBaught[6], 1.5)))
                 upgradesBaught[6]++
-                    cursorSpeed = Math.pow(cursorSpeed, 1.05)
+                    cursorSpeed = Math.pow(cursorSpeed, 1.23)
             }
             var newCost = Math.floor(12 * Math.pow(upgradesBaught[6], 1.5))
             break;

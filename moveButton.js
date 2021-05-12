@@ -85,8 +85,8 @@ function update() {
 function cursorEvents() {
     for (i = 0; i < cursors.length; i++) { //for the cursors in cursrs
         // calculate distance and diret
-        cspeedX = cursorSpeed * cursors[i][3]
-        cspeedY = cursorSpeed * cursors[i][4]
+        cspeedX = cursorSpeed * (cursors[i][3] / 2)
+        cspeedY = cursorSpeed * (cursors[i][4] / 2)
 
         toButtonX = rect.x + buttonSize * 4 * scale - cursors[i][0]
         toButtonY = rect.y + buttonSize * 3 * scale - cursors[i][1]
@@ -96,7 +96,7 @@ function cursorEvents() {
         //set the cursor closer to the button, times cursor speed
         cursors[i][0] += toButtonX * cspeedX
         cursors[i][1] += toButtonY * cspeedY
-        ctx.fillStyle = '#000';
+        ctx.fillStyle = "black";
         ctx.font = '15px Sans-serif';
         //add a text box above, showing this cursor's speed
         ctx.fillText((cspeedX * cspeedY).toFixed(3), cursors[i][0], cursors[i][1] - 10)
@@ -110,8 +110,8 @@ function cursorEvents() {
                 addPoints(pointsValue)
                 plusTexts.push([rect.x, rect.y, 1])
                     //give a little bonus to this cursor's speed, as a reward
-                cursors[i][3] = Math.pow(cursors[i][3], 1.01)
-                cursors[i][4] = Math.pow(cursors[i][4], 1.01)
+                cursors[i][3] = Math.pow(cursors[i][3], 1.03)
+                cursors[i][4] = Math.pow(cursors[i][4], 1.03)
                     //if a cursor is faster than the button, penalize it.
                 if (toButtonX * cspeedX >= Math.abs(rect.xspeed)) {
                     cursors[i][3] = Math.pow(cursors[i][3], 0.6)
