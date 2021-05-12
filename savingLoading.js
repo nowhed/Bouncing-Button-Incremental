@@ -2,6 +2,7 @@ function save() {
     var save = {
         points: points,
         buttonSpeed: buttonSpeed,
+        buttonSize: buttonSize,
         stunDuration: stunDuration,
         stunCooldown: stunCooldown,
         pointsValue: pointsValue,

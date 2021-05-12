@@ -33,8 +33,9 @@ function buy(item) {
         case "size":
             if (points >= (Math.floor(Math.pow(3.2113, upgradesBaught[1])))) {
                 addPoints(-1 * Math.floor(Math.pow(3.2113, upgradesBaught[1])))
-                buttonSize = Math.pow(30, 1 + 0.05 * upgradesBaught[1])
                 upgradesBaught[1]++
+                    // sigmoid function, makes size level off at around 100
+                    buttonSize = 46.6 / (0.4 + Math.pow(Math.E, -0.3 * upgradesBaught[1])) - 14
             }
             var newCost = Math.floor(Math.pow(3.2113, upgradesBaught[1]))
             break;
@@ -60,6 +61,7 @@ function buy(item) {
                 addPoints(-1 * Math.floor(10 * Math.pow(upgradesBaught[4], 4.25)))
                 upgradesBaught[4]++
                     pointsValue += pointsValue;
+                ogp += ogp;
             }
             var newCost = Math.floor(10 * Math.pow(upgradesBaught[4], 4.25))
             break;

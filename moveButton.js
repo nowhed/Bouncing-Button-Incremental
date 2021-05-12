@@ -110,14 +110,14 @@ function cursorEvents() {
                 addPoints(pointsValue)
                 plusTexts.push([rect.x, rect.y, 1])
                     //give a little bonus to this cursor's speed, as a reward
-                cursors[i][3] = Math.pow(cursors[i][3], 1.03)
-                cursors[i][4] = Math.pow(cursors[i][4], 1.03)
+                cursors[i][3] += cursors[i][3] * 0.02 * cursorSpeed
+                cursors[i][4] += cursors[i][4] * 0.02 * cursorSpeed
                     //if a cursor is faster than the button, penalize it.
-                if (toButtonX * cspeedX >= Math.abs(rect.xspeed)) {
-                    cursors[i][3] = Math.pow(cursors[i][3], 0.6)
+                if (toButtonX * cspeedX >= Math.abs(rect.xspeed) / 1.5) {
+                    cursors[i][3] -= cursors[i][3] / 4
                 }
-                if (toButtonY * cspeedY >= Math.abs(rect.yspeed)) {
-                    cursors[i][4] = Math.pow(cursors[i][4], 0.6)
+                if (toButtonY * cspeedY >= Math.abs(rect.yspeed) / 1.5) {
+                    cursors[i][4] -= cursors[i][4] / 4
                 }
             }
             cursors[i][2]++
@@ -134,11 +134,13 @@ function checkHitBox() {
     didfirst = false;
     if (rect.x + buttonSize * 8 * scale >= canvasSize.x || rect.x <= 0) {
         rect.xspeed *= -1;
+        rect.x += rect.xspeed;
         didfirst = true
     }
 
     if (rect.y + buttonSize * 6 * scale >= canvasSize.y || rect.y <= 0) {
         rect.yspeed *= -1;
+        rect.y += rect.yspeed;
         if (didfirst) {
             //, 0%, rgba(255, 94, 0, 1) 28 % , rgba(53, 159, 39, 1) 53 % , rgba(50, 47, 255, 1) 79 % , rgba(255, 0, 236, 1) 100 % 
             rect.color = '#00FFD5FF'
