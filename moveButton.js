@@ -8,6 +8,7 @@ var cornerTextOpacity = 0;
 var activeMoving = true;
 var down = false;
 var mouseinbox = false;
+var mouseMoving = false;
 //x, y, opacity
 var plusTexts = []
 var rect = {
@@ -116,7 +117,8 @@ function checkMouse() {
     // console.log(currentMousePos.x + ", " + currentMousePos.y + ", Rect:" + rect.x + ", " + rect.y + ", w/h: ", rect.width * scale + ", " + buttonSize * 6 * scale)
 }
 
-$(document).mousemove(function(event) {
-    currentMousePos.x = event.pageX - $('#buttonCanvas').offset().left;;
-    currentMousePos.y = event.pageY - $('#buttonCanvas').offset().top;;
-});
+function findMouse(e) {
+    currentMousePos.x = e.pageX - $('#buttonCanvas').offset().left;
+    currentMousePos.y = e.pageY - $('#buttonCanvas').offset().top;
+}
+document.getElementById('buttonCanvas').addEventListener("mousemove", findMouse)
