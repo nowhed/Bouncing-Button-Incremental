@@ -64,20 +64,20 @@ function buy(item) {
             var newCost = Math.floor(10 * Math.pow(upgradesBaught[4], 3.6))
             break;
         case "cursor":
-            if (points >= Math.floor(15 * Math.pow(upgradesBaught[5], 1.15))) {
-                addPoints(-1 * Math.floor(15 * Math.pow(upgradesBaught[5], 1.15)))
+            if (points >= Math.floor(20 * Math.pow(upgradesBaught[5], 1.4))) {
+                addPoints(-1 * Math.floor(20 * Math.pow(upgradesBaught[5], 1.4)))
                 upgradesBaught[5]++
                     cursors.push([0, 0, 0, 1 + Math.random(), 1 + Math.random()])
             }
-            var newCost = Math.floor(15 * Math.pow(upgradesBaught[5], 1.15))
+            var newCost = Math.floor(20 * Math.pow(upgradesBaught[5], 1.4))
             break;
         case "cursorSpeed":
-            if (points >= Math.floor(5 * Math.pow(upgradesBaught[6], 1.3))) {
-                addPoints(-1 * Math.floor(5 * Math.pow(upgradesBaught[6], 1.3)))
+            if (points >= Math.floor(12 * Math.pow(upgradesBaught[6], 1.5))) {
+                addPoints(-1 * Math.floor(12 * Math.pow(upgradesBaught[6], 1.5)))
                 upgradesBaught[6]++
-                    cursorSpeed = Math.pow(cursorSpeed, 1.2)
+                    cursorSpeed = Math.pow(cursorSpeed, 1.05)
             }
-            var newCost = Math.floor(5 * Math.pow(upgradesBaught[6], 1.3))
+            var newCost = Math.floor(12 * Math.pow(upgradesBaught[6], 1.5))
             break;
     }
     document.getElementById(item + 'Cost').innerHTML = newCost;

@@ -106,23 +106,23 @@ function cursorEvents() {
             cursors[i][1] >= rect.y &&
             cursors[i][1] <= rect.y + buttonSize * 6 * scale) {
             //increase the "cursor click progress" by 1
-            if (cursors[i][2] % Math.floor(100 / cursorSpeed) === 0) { //got a click!
+            if (cursors[i][2] % Math.floor(120 / cursorSpeed) === 0) { //got a click!
                 addPoints(pointsValue)
                 plusTexts.push([rect.x, rect.y, 1])
                     //give a little bonus to this cursor's speed, as a reward
-                cursors[i][3] = Math.pow(cursors[i][3], 1.025)
-                cursors[i][4] = Math.pow(cursors[i][4], 1.025)
+                cursors[i][3] = Math.pow(cursors[i][3], 1.01)
+                cursors[i][4] = Math.pow(cursors[i][4], 1.01)
                     //if a cursor is faster than the button, penalize it.
                 if (toButtonX * cspeedX >= Math.abs(rect.xspeed)) {
-                    cursors[i][3] = Math.pow(cursors[i][3], 0.8)
+                    cursors[i][3] = Math.pow(cursors[i][3], 0.6)
                 }
                 if (toButtonY * cspeedY >= Math.abs(rect.yspeed)) {
-                    cursors[i][4] = Math.pow(cursors[i][4], 0.8)
+                    cursors[i][4] = Math.pow(cursors[i][4], 0.6)
                 }
             }
             cursors[i][2]++
         } else {
-            cursors[i][2] = Math.floor(100 / cursorSpeed)
+            cursors[i][2] = Math.floor(120 / cursorSpeed)
         }
     }
 }
@@ -140,13 +140,16 @@ function checkHitBox() {
     if (rect.y + buttonSize * 6 * scale >= canvasSize.y || rect.y <= 0) {
         rect.yspeed *= -1;
         if (didfirst) {
+            //, 0%, rgba(255, 94, 0, 1) 28 % , rgba(53, 159, 39, 1) 53 % , rgba(50, 47, 255, 1) 79 % , rgba(255, 0, 236, 1) 100 % 
+            rect.color = '#00FFD5FF'
             console.log("Hit a corner!")
             cornerTextOpacity = 1;
             ogp = pointsValue
             pointsValue *= 3
             setTimeout(() => {
+                rect.color = '#383838'
                 pointsValue = ogp
-            }, 3000);
+            }, 6000);
         }
     }
 }
