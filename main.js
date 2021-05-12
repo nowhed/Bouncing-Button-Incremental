@@ -1,25 +1,19 @@
-var points = 0;
-var buttonSpeed = 20;
+var points = 50;
+var buttonSpeed = 18;
 var upgradesBaught = [1, 1, 1, 1, 1];
 var stunDuration = 500; // 0.5s
 var stunCooldown = 7000; // 7s + the stun duration, 7 seconds so platers aren't too reliant on it
 var pointsValue = 1;
-var buttonContainer = document.getElementById('buttonMarq')
-setTimeout(() => {
-    document.getElementById('buttonContainer').innerHTML = document.getElementById('buttonContainer').innerHTML
-    buttonContainer = document.getElementById('buttonMarq')
-    load();
-    //load at the start, refresh marquee, get the new marquee
-}, 200);
-
+var buttonSize = 30;
+let canvasSize = {
+    x: 700,
+    y: 550
+}
 
 function addPoints(add) {
     points += add;
     document.getElementById("pointsSpan").innerHTML = points;
 }
-
-buttonContainer.setAttribute("scrollamount", buttonSpeed)
-buttonContainer.parentElement.setAttribute("scrollamount", buttonSpeed)
 
 function buy(item) {
     switch (item) {
@@ -27,17 +21,14 @@ function buy(item) {
             if (points >= (Math.floor(Math.pow(1.7, upgradesBaught[0])))) {
                 addPoints(-1 * Math.floor(Math.pow(1.7, upgradesBaught[0])))
                 upgradesBaught[0]++
-                    buttonSpeed = buttonSpeed - buttonSpeed / 28
-                buttonContainer.setAttribute("scrollamount", buttonSpeed)
-                buttonContainer.parentElement.setAttribute("scrollamount", buttonSpeed)
+                    buttonSpeed = buttonSpeed - buttonSpeed / 25
             }
             var newCost = Math.floor(Math.pow(1.7, upgradesBaught[0]))
             break;
         case "size":
             if (points >= (Math.floor(Math.pow(3.2113, upgradesBaught[1])))) {
                 addPoints(-1 * Math.floor(Math.pow(3.2113, upgradesBaught[1])))
-                document.getElementById('movingButton').style.width = Math.pow(30, 1 + 0.06 * upgradesBaught[1]) + "px"
-                document.getElementById('movingButton').style.height = Math.pow(30, 1 + 0.06 * upgradesBaught[1]) + "px"
+                buttonSize = Math.pow(30, 1 + 0.05 * upgradesBaught[1])
                 upgradesBaught[1]++
             }
             var newCost = Math.floor(Math.pow(3.2113, upgradesBaught[1]))
@@ -60,13 +51,12 @@ function buy(item) {
             var newCost = Math.floor(Math.pow(1.7, upgradesBaught[3]))
             break;
         case "value":
-            if (points >= Math.floor(10 * Math.pow(upgradesBaught[4], 1.5))) {
-                addPoints(-1 * Math.floor(10 * Math.pow(upgradesBaught[4], 1.5)))
+            if (points >= Math.floor(10 * Math.pow(upgradesBaught[4], 2.5))) {
+                addPoints(-1 * Math.floor(10 * Math.pow(upgradesBaught[4], 2.5)))
                 upgradesBaught[4]++
                     pointsValue += pointsValue;
-                document.getElementById('movingButton').innerHTML = "+" + pointsValue
             }
-            var newCost = Math.floor(10 * Math.pow(upgradesBaught[4], 1.4))
+            var newCost = Math.floor(10 * Math.pow(upgradesBaught[4], 2.5))
             break;
     }
     document.getElementById(item + 'Cost').innerHTML = newCost;
@@ -81,11 +71,9 @@ $(document).keydown(function(event) {
 
 function stunButton() {
     document.getElementById('stunbutton').disabled = true; //disable button
-    buttonContainer.stop(); //stop the marquees
-    buttonContainer.parentElement.stop();
+    activeMoving = false //stop button
     setTimeout(function() { //wait duration
-        buttonContainer.start(); //start marquees
-        buttonContainer.parentElement.start();
+        activeMoving = true //start button
         moveProgress("stunCooldown", (stunCooldown)) //start the cooldown bar
         setTimeout(function() { //wait for cooldown
             document.getElementById('stunbutton').disabled = false; // enable button

@@ -26,8 +26,6 @@ function load() {
     document.getElementById('stunTimeCost').innerHTML = Math.floor(Math.pow(1.65, upgradesBaught[2]))
     document.getElementById('stunCooldownCost').innerHTML = Math.floor(Math.pow(1.7, upgradesBaught[3]))
     document.getElementById('valueCost').innerHTML = Math.floor(10 * Math.pow(upgradesBaught[4], 1.4))
-    document.getElementById('movingButton').style.width = Math.pow(30, 1 + 0.06 * upgradesBaught[1]) + "px"
-    document.getElementById('movingButton').style.height = Math.pow(30, 1 + 0.06 * upgradesBaught[1]) + "px"
     document.getElementById('stunDuration').innerHTML = (stunDuration / 1000).toFixed(2)
     console.log('Loaded! ' + savegame)
 }

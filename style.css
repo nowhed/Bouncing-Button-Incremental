@@ -1,6 +1,4 @@
-.buttonContainer {
-    height: 400px;
-    width: 500px;
+#buttonCanvas {
     border: 2px solid black;
 }
 
