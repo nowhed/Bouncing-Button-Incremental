@@ -9,6 +9,7 @@ var activeMoving = true;
 var down = false;
 var mouseinbox = false;
 var mouseMoving = false;
+var cursorImg = new Image();
 //x, y, opacity
 var plusTexts = []
 var rect = {
@@ -58,10 +59,10 @@ function update() {
             //if you hit a corner, show some text and then fade it out
         ctx.font = '30px Sans-serif';
         ctx.fillStyle = 'rgba(0, 0, 81, ' + cornerTextOpacity + ')'
-        if (cornerTextOpacity > 0) {
+        if (cornerTextOpacity > 0) { //if the "corner reached" text is not gone, make it slowly
             cornerTextOpacity -= 0.005
+            ctx.fillText("Corner frenzy!", 180, 200)
         }
-        ctx.fillText("Corner frenzy!", 180, 200)
         ctx.font = '20px Sans-serif';
         for (i = 0; i < plusTexts.length; i++) { //for every fading number there is
             plusTexts[i][2] -= 0.02 //make it more transparent
@@ -75,10 +76,59 @@ function update() {
             rect.y += rect.yspeed;
         }
         //Check for collision 
+        cursorEvents();
         checkHitBox();
     }, speed)
 }
 
+
+function cursorEvents() {
+    for (i = 0; i < cursors.length; i++) { //for the cursors in cursrs
+        // calculate distance and diret
+        cspeedX = cursorSpeed * cursors[i][3]
+        cspeedY = cursorSpeed * cursors[i][4]
+
+        toButtonX = rect.x + buttonSize * 4 * scale - cursors[i][0]
+        toButtonY = rect.y + buttonSize * 3 * scale - cursors[i][1]
+        toButtonLength = Math.sqrt(toButtonX * toButtonX + toButtonY * toButtonY);
+        toButtonX = toButtonX / toButtonLength;
+        toButtonY = toButtonY / toButtonLength;
+        //set the cursor closer to the button, times cursor speed
+        cursors[i][0] += toButtonX * cspeedX
+        cursors[i][1] += toButtonY * cspeedY
+        ctx.fillStyle = '#000';
+        ctx.font = '15px Sans-serif';
+        //add a text box above, showing this cursor's speed
+        ctx.fillText((cspeedX * cspeedY).toFixed(3), cursors[i][0], cursors[i][1] - 10)
+        ctx.drawImage(cursorImg, cursors[i][0], cursors[i][1], 18, 29); //draw the cursor(s)
+        if (cursors[i][0] >= rect.x &&
+            cursors[i][0] <= rect.x + buttonSize * 8 * scale &&
+            cursors[i][1] >= rect.y &&
+            cursors[i][1] <= rect.y + buttonSize * 6 * scale) {
+            //increase the "cursor click progress" by 1
+            if (cursors[i][2] % (100 / (cspeedX * cspeedY)) === 0) { //got a click!
+                addPoints(pointsValue)
+                plusTexts.push([rect.x, rect.y, 1])
+                    //give a little bonus to this cursor's speed, as a reward
+                cursors[i][3] = Math.pow(cursors[i][3], 1.05)
+                cursors[i][4] = Math.pow(cursors[i][4], 1.05)
+                    //if a cursor is faster than the button, penalize it.
+                if (toButtonX * cursorSpeed * cursors[i][3] >= Math.abs(rect.xspeed)) {
+                    cursors[i][3] = Math.pow(cursors[i][3], 0.8)
+                }
+                if (toButtonY * cursorSpeed * cursors[i][4] >= Math.abs(rect.yspeed)) {
+                    cursors[i][4] = Math.pow(cursors[i][4], 0.8)
+                }
+            }
+            cursors[i][2]++
+        } else {
+            cursors[i][2] = (100 / (cspeedX * cspeedY))
+        }
+    }
+}
+// x = 40, bx = 10
+// x = 10, bx = 15
+// -30, 5
 //Check for border collision
 function checkHitBox() {
     didfirst = false;
@@ -122,3 +172,4 @@ function findMouse(e) {
     currentMousePos.y = e.pageY - $('#buttonCanvas').offset().top;
 }
 document.getElementById('buttonCanvas').addEventListener("mousemove", findMouse)
+cursorImg.src = "./cursor.png";

@@ -1,10 +1,14 @@
-var points = 0;
+var points = 50;
 var buttonSpeed = 18;
-var upgradesBaught = [1, 1, 1, 1, 1];
+var upgradesBaught = [1, 1, 1, 1, 1, 1, 1];
 var stunDuration = 500; // 0.5s
 var stunCooldown = 7000; // 7s + the stun duration, 7 seconds so platers aren't too reliant on it
 var pointsValue = 1;
 var buttonSize = 30;
+var cursors = [
+    //x, y, clickprogress, random factor x, random factor 
+]
+var cursorSpeed = 1.5
 let canvasSize = {
     x: 700,
     y: 550
@@ -51,12 +55,28 @@ function buy(item) {
             var newCost = Math.floor(Math.pow(1.7, upgradesBaught[3]))
             break;
         case "value":
-            if (points >= Math.floor(10 * Math.pow(upgradesBaught[4], 2.5))) {
-                addPoints(-1 * Math.floor(10 * Math.pow(upgradesBaught[4], 2.5)))
+            if (points >= Math.floor(10 * Math.pow(upgradesBaught[4], 3.6))) {
+                addPoints(-1 * Math.floor(10 * Math.pow(upgradesBaught[4], 3.6)))
                 upgradesBaught[4]++
                     pointsValue += pointsValue;
             }
-            var newCost = Math.floor(10 * Math.pow(upgradesBaught[4], 2.5))
+            var newCost = Math.floor(10 * Math.pow(upgradesBaught[4], 3.6))
+            break;
+        case "cursor":
+            if (points >= Math.floor(15 * Math.pow(upgradesBaught[5], 1.15))) {
+                addPoints(-1 * Math.floor(15 * Math.pow(upgradesBaught[5], 1.15)))
+                upgradesBaught[5]++
+                    cursors.push([0, 0, 0, 1 + Math.random(), 1 + Math.random()])
+            }
+            var newCost = Math.floor(15 * Math.pow(upgradesBaught[5], 1.15))
+            break;
+        case "cursorSpeed":
+            if (points >= Math.floor(5 * Math.pow(upgradesBaught[6], 1.3))) {
+                addPoints(-1 * Math.floor(5 * Math.pow(upgradesBaught[6], 1.3)))
+                upgradesBaught[6]++
+                    cursorSpeed = Math.pow(cursorSpeed, 1.2)
+            }
+            var newCost = Math.floor(5 * Math.pow(upgradesBaught[6], 1.3))
             break;
     }
     document.getElementById(item + 'Cost').innerHTML = newCost;

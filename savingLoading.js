@@ -5,7 +5,9 @@ function save() {
         stunDuration: stunDuration,
         stunCooldown: stunCooldown,
         pointsValue: pointsValue,
-        upgradesBaught: JSON.stringify(upgradesBaught)
+        upgradesBaught: JSON.stringify(upgradesBaught),
+        cursorSpeed: cursorSpeed,
+        cursors: JSON.stringify(cursors)
     }
     localStorage.setItem("save", JSON.stringify(save));
     console.log('Saved! ' + save)
@@ -19,6 +21,8 @@ function load() {
     if (typeof savegame.stunCooldown !== "undefined") stunCooldown = savegame.stunCooldown;
     if (typeof savegame.pointsValue !== "undefined") pointsValue = savegame.pointsValue;
     if (typeof savegame.upgradesBaught !== "undefined") upgradesBaught = JSON.parse(savegame.upgradesBaught);
+    if (typeof savegame.cursors !== "undefined") cursors = JSON.parse(savegame.cursors);
+    if (typeof savegame.cursorSpeed !== "undefined") cursorSpeed = savegame.cursorSpeed
 
     document.getElementById("pointsSpan").innerHTML = points;
     document.getElementById('speedCost').innerHTML = Math.floor(Math.pow(1.7, upgradesBaught[0]));
@@ -26,6 +30,7 @@ function load() {
     document.getElementById('stunTimeCost').innerHTML = Math.floor(Math.pow(1.65, upgradesBaught[2]))
     document.getElementById('stunCooldownCost').innerHTML = Math.floor(Math.pow(1.7, upgradesBaught[3]))
     document.getElementById('valueCost').innerHTML = Math.floor(10 * Math.pow(upgradesBaught[4], 1.4))
+    document.getElementById('cursorCost').innerHTML = Math.floor(15 * Math.pow(upgradesBaught[5], 1.15))
     document.getElementById('stunDuration').innerHTML = (stunDuration / 1000).toFixed(2)
     console.log('Loaded! ' + savegame)
 }
