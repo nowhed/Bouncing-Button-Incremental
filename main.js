@@ -9,7 +9,7 @@ var cursors = [
     //x, y, clickprogress, random factor x, random factor 
 ]
 load();
-var cursorSpeed = 1.5
+var cursorSpeed = 1.2
 let canvasSize = {
     x: 700,
     y: 550
@@ -69,7 +69,7 @@ function buy(item) {
             if (points >= Math.floor(20 * Math.pow(upgradesBaught[5], 1.2))) {
                 addPoints(-1 * Math.floor(20 * Math.pow(upgradesBaught[5], 1.2)))
                 upgradesBaught[5]++
-                    cursors.push([0, 0, 0, 1 + Math.random(), 1 + Math.random()])
+                    cursors.push([0, 0, 0, 1.5 * Math.random() + 0.2, 1.5 * Math.random() + 0.2])
             }
             var newCost = Math.floor(20 * Math.pow(upgradesBaught[5], 1.2))
             break;

@@ -84,9 +84,11 @@ function update() {
 function cursorEvents() {
     for (i = 0; i < cursors.length; i++) { //for the cursors in cursrs
         // calculate distance and diret
-        cspeedX = cursorSpeed * (cursors[i][3] / 2)
-        cspeedY = cursorSpeed * (cursors[i][4] / 2)
+        cursorSigX = (1.05 * buttonSpeed / (1 + Math.pow(Math.E, -cursors[i][3] * 0.3))) - buttonSpeed / 2
+        cursorSigY = (1.05 * buttonSpeed / (1 + Math.pow(Math.E, -cursors[i][4] * 0.3))) - buttonSpeed / 2
 
+        cspeedX = cursorSpeed * cursorSigX
+        cspeedY = cursorSpeed * cursorSigY
         toButtonX = rect.x + buttonSize * 4 * scale - cursors[i][0]
         toButtonY = rect.y + buttonSize * 3 * scale - cursors[i][1]
         toButtonLength = Math.sqrt(toButtonX * toButtonX + toButtonY * toButtonY);
@@ -98,7 +100,7 @@ function cursorEvents() {
         ctx.fillStyle = "black";
         ctx.font = '15px Sans-serif';
         //add a text box above, showing this cursor's speed
-        ctx.fillText((cspeedX * cspeedY).toFixed(3), cursors[i][0], cursors[i][1] - 10)
+        ctx.fillText((cursorSigX * cursorSpeed * cursorSigY * cursorSpeed).toFixed(3), cursors[i][0], cursors[i][1] - 10)
         ctx.drawImage(cursorImg, cursors[i][0], cursors[i][1], 18, 29); //draw the cursor(s)
         if (cursors[i][0] >= rect.x &&
             cursors[i][0] <= rect.x + buttonSize * 8 * scale &&
@@ -110,8 +112,8 @@ function cursorEvents() {
                 plusTexts.push([rect.x, rect.y, 1])
                     //give a little bonus to this cursor's speed, as a reward
                     // sigmoid. 450 * buttonspeed /E^-0.3*cursor speed
-                cursors[i][3] = (450 * (Math.random() * (1.1 - 0.9) + 0.9) / buttonSpeed * 0.07 + 0.09) / 0.145 + Math.pow(Math.E, -0.3 * cursors[i][3]) - cursorSpeed
-                cursors[i][4] = (450 * (Math.random() * (1.1 - 0.9) + 0.9) / buttonSpeed * 0.07 + 0.09) / 0.145 + Math.pow(Math.E, -0.3 * cursors[i][4]) - cursorSpeed
+                cursors[i][3] += cursors[i][3] / 16
+                cursors[i][4] += cursors[i][4] / 16
                     //if a cursor is faster than the button, penalize it.
             }
             cursors[i][2]++
