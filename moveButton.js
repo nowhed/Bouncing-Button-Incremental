@@ -1,7 +1,7 @@
 let scale = 0.17; // Image scale (I work on 1080p monitor)
 let canvas;
 let ctx;
-let speed = 21;
+let speed = 24;
 let borderThickness = 6;
 var currentMousePos = { x: -1, y: -1 };
 var cornerTextOpacity = 0;
@@ -37,10 +37,6 @@ var rect = {
 function update() {
     setTimeout(() => {
         //get current mouse X and Y
-        $(document).mousemove(function(event) {
-            currentMousePos.x = event.pageX - $('#buttonCanvas').offset().left;;
-            currentMousePos.y = event.pageY - $('#buttonCanvas').offset().top;;
-        });
         checkMouse();
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
@@ -106,8 +102,11 @@ function checkHitBox() {
 
 function checkMouse() {
     //if mouse is within button's borders
-    if (currentMousePos.x >= rect.x && currentMousePos.x <= rect.x + buttonSize * 8 * scale && currentMousePos.y >= rect.y && currentMousePos.y <= rect.y + buttonSize * 6 * scale) {
-        rect.color = '#b8b8b8';
+    if (currentMousePos.x >= rect.x &&
+        currentMousePos.x <= rect.x + buttonSize * 8 * scale &&
+        currentMousePos.y >= rect.y &&
+        currentMousePos.y <= rect.y + buttonSize * 6 * scale) {
+        rect.color = '#b8b8b8'
         mouseinbox = true
             //  console.log('Mouse!')
     } else {
@@ -116,3 +115,8 @@ function checkMouse() {
     }
     // console.log(currentMousePos.x + ", " + currentMousePos.y + ", Rect:" + rect.x + ", " + rect.y + ", w/h: ", rect.width * scale + ", " + buttonSize * 6 * scale)
 }
+
+$(document).mousemove(function(event) {
+    currentMousePos.x = event.pageX - $('#buttonCanvas').offset().left;;
+    currentMousePos.y = event.pageY - $('#buttonCanvas').offset().top;;
+});
