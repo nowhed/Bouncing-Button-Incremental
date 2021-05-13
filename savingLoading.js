@@ -34,6 +34,7 @@ function load() {
         if (typeof savegame.dartGuns !== "undefined") dartGuns = JSON.parse(savegame.dartGuns)
         if (typeof savegame.gunMultiplier !== "undefined") gunMultiplier = savegame.gunMultiplier
         if (typeof savegame.tabsUnlocked !== "undefined") tabsUnlocked = savegame.tabsUnlocked
+        if (typeof savegame.buttonSize !== "undefined") buttonSize = savegame.buttonSize
         if (gunSettings.enhanced) {
             document.getElementById('enhanced').checked = true
         }
@@ -44,7 +45,7 @@ function load() {
         document.getElementById('stunTimeCost').innerHTML = Math.floor(Math.pow(1.65, upgradesBought[2]))
         document.getElementById('stunCooldownCost').innerHTML = Math.floor(Math.pow(1.7, upgradesBought[3]))
         document.getElementById('valueCost').innerHTML = Math.floor(10 * Math.pow(upgradesBought[4], 3.8))
-        document.getElementById('cursorCost').innerHTML = Math.floor(20 * Math.pow(upgradesBought[5], 1.1))
+        document.getElementById('cursorCost').innerHTML = Math.floor(20 * Math.pow(upgradesBought[5], 1.05))
         document.getElementById('cursorSpeedCost').innerHTML = Math.floor(12 * Math.pow(upgradesBought[6], 1.5))
         document.getElementById('stunDuration').innerHTML = (stunDuration / 1000).toFixed(2)
         document.getElementById('dartGunCost').innerHTML = Math.floor(50 * Math.pow(upgradesBought[7], 1.8))

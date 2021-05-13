@@ -1,5 +1,6 @@
 #buttonCanvas {
     border: 2px solid black;
+    user-select: none;
 }
 
 #dist {

@@ -155,7 +155,7 @@ function dartGunEvents() {
         ctx.translate(centerX, centerY);
         ctx.rotate(Math.atan2(distY, distX))
             //if the gun can fire
-        if (Math.floor(dartGuns[i][3] % (100 / (upgradesBought[8] / 2))) === 0) {
+        if (Math.floor(dartGuns[i][3] % (100 / (upgradesBought[8] / 3))) === 0) {
             //x, y, rotation, velocity, opacity
             bullet.push([centerX, centerY, Math.atan2(distY, distX), 40, 1])
                 //fire bullet
@@ -166,7 +166,7 @@ function dartGunEvents() {
         ctx.fillStyle = "black";
         ctx.font = '15px Sans-serif';
         //add a text box above, showing time before firing
-        ctx.fillText((((100 / (upgradesBought[8] / 2)) - dartGuns[i][3] % (100 / (upgradesBought[8] / 2))) / speed).toFixed(2) + "s",
+        ctx.fillText((((100 / (upgradesBought[8] / 3)) - dartGuns[i][3] % (100 / (upgradesBought[8] / 3))) / speed).toFixed(2) + "s",
             dartGuns[i][0] + 50, dartGuns[i][1] - 50)
     }
     ctx.globalAlpha = 1;
@@ -175,9 +175,14 @@ function dartGunEvents() {
 function cursorEvents() {
     for (i = 0; i < cursors.length; i++) { //for the cursors in cursors
         // calculate distance and diret
-        cursorSigX = (1.04 * buttonSpeed / (1 + Math.pow(Math.E, -cursors[i][3] * 0.3))) - buttonSpeed / 1.9
-        cursorSigY = (1.04 * buttonSpeed / (1 + Math.pow(Math.E, -cursors[i][4] * 0.3))) - buttonSpeed / 1.9
-
+        cursorSigX = Math.abs((1.04 * buttonSpeed / (1 + Math.pow(Math.E, -cursors[i][3] * 0.2))) - buttonSpeed / 1.9)
+        cursorSigY = Math.abs((1.04 * buttonSpeed / (1 + Math.pow(Math.E, -cursors[i][4] * 0.2))) - buttonSpeed / 1.9)
+        while (cursorSigX > 120 / buttonSpeed) {
+            cursorSigX = cursorSigX * (cursors[i][3] - Math.floor(cursors[i][3]))
+        }
+        while (cursorSigY > 120 / buttonSpeed) {
+            cursorSigY = cursorSigY * (cursors[i][4] - Math.floor(cursors[i][4]))
+        }
         cspeedX = cursorSpeed * cursorSigX
         cspeedY = cursorSpeed * cursorSigY
         toButtonX = rect.x + buttonSize * 4 * scale - cursors[i][0]

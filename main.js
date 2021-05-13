@@ -36,15 +36,11 @@ function addPoints(add) {
         document.getElementById('Cursors').innerHTML = "Cursors"
         document.getElementById('Cursors').disabled = false
         tabsUnlocked = 1
-    } else {
-        return;
     }
-    if (points >= 40 && tabsUnlocked === 1) {
+    if (points >= 40 && tabsUnlocked > 0) {
         document.getElementById('dartGun').innerHTML = "Dart Gun"
         document.getElementById('dartGun').disabled = false
         tabsUnlocked = 2
-    } else {
-        return;
     }
 }
 
@@ -101,13 +97,13 @@ function buy(item) {
             var newCost = Math.floor(10 * Math.pow(upgradesBought[4], 3.8))
             break;
         case "cursor":
-            if (points >= Math.floor(20 * Math.pow(upgradesBought[5], 1.1))) {
-                addPoints(-1 * Math.floor(20 * Math.pow(upgradesBought[5], 1.1)))
+            if (points >= Math.floor(20 * Math.pow(upgradesBought[5], 1.05))) {
+                addPoints(-1 * Math.floor(20 * Math.pow(upgradesBought[5], 1.05)))
                 upgradesBought[5]++
                     cursors.push([0, 0, 0, 1.5 * Math.random() + 0.2, 1.5 * Math.random() + 0.2])
                 plusTexts.push([rect.x, rect.y, 1, "Cursors: " + cursors.length])
             }
-            var newCost = Math.floor(20 * Math.pow(upgradesBought[5], 1.1))
+            var newCost = Math.floor(20 * Math.pow(upgradesBought[5], 1.05))
             break;
         case "cursorSpeed":
             if (points >= Math.floor(12 * Math.pow(upgradesBought[6], 1.5))) {
@@ -131,7 +127,7 @@ function buy(item) {
             if (points >= Math.floor(40 * Math.pow(upgradesBought[8], 1.1))) {
                 addPoints(-1 * Math.floor(40 * Math.pow(upgradesBought[8], 1.1)))
                 upgradesBought[8]++
-                    plusTexts.push([rect.x, rect.y, 1, "Reload time: " + ((100 / (upgradesBought[8] / 2)) / speed).toFixed(2) + "s"])
+                    plusTexts.push([rect.x, rect.y, 1, "Reload time: " + ((100 / (upgradesBought[8] / 3)) / speed).toFixed(2) + "s"])
             }
             var newCost = Math.floor(40 * Math.pow(upgradesBought[8], 1.1))
             break;
