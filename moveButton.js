@@ -127,6 +127,7 @@ function dartGunEvents() {
         }
     }
     // render every dart gun
+    ctx.globalAlpha = 0.75;
     for (i = 0; i < dartGuns.length; i++) {
         ctx.save();
         centerX = dartGuns[i][0] + 50
@@ -141,7 +142,7 @@ function dartGunEvents() {
 
         ctx.translate(centerX, centerY);
         ctx.rotate(Math.atan2(distY, distX))
-        if (dartGuns[i][3] % (100 / (upgradesBaught[8] / 2)) === 0) {
+        if (Math.floor(dartGuns[i][3] % (100 / (upgradesBought[8] / 2))) === 0) {
             //x, y, rotation, velocity, opacity
             bullet.push([centerX, centerY, Math.atan2(distY, distX), 40, 1])
         }
@@ -151,9 +152,10 @@ function dartGunEvents() {
         ctx.fillStyle = "black";
         ctx.font = '15px Sans-serif';
         //add a text box above, showing time before firing
-        ctx.fillText((((100 / (upgradesBaught[8] / 2)) - dartGuns[i][3] % (100 / (upgradesBaught[8] / 2))) / speed).toFixed(2) + "s",
+        ctx.fillText((((100 / (upgradesBought[8] / 2)) - dartGuns[i][3] % (100 / (upgradesBought[8] / 2))) / speed).toFixed(2) + "s",
             dartGuns[i][0] + 50, dartGuns[i][1] - 50)
     }
+    ctx.globalAlpha = 1;
 }
 
 function cursorEvents() {
