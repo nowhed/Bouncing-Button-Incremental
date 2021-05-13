@@ -1,5 +1,5 @@
 var points = 0;
-var buttonSpeed = 30;
+var buttonSpeed = 10;
 var upgradesBought = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
 var stunDuration = 700; // 0.7s
 var stunCooldown = 7000; // 7s + the stun duration, 7 seconds so platers aren't too reliant on it
@@ -7,6 +7,7 @@ var pointsValue = 1;
 var buttonSize = 30;
 var gunMultiplier = 1;
 var ogp = 1;
+var tabsUnlocked = 0;
 var cursors = [
     //x, y, clickprogress, random factor x, random factor 
 ]
@@ -16,6 +17,11 @@ var dartGuns = [
 var bullet = [
     //x, y, rotation, velocity, opacity
 ]
+var gunSettings = {
+    enhanced: true,
+    dist: 2,
+    enhancedVal: 10
+};
 load();
 var cursorSpeed = 1.2
 let canvasSize = {
@@ -26,15 +32,17 @@ let canvasSize = {
 function addPoints(add) {
     points += add;
     document.getElementById("pointsSpan").innerHTML = points;
-    if (points >= 15) {
+    if (points >= 15 && tabsUnlocked === 0) {
         document.getElementById('Cursors').innerHTML = "Cursors"
         document.getElementById('Cursors').disabled = false
+        tabsUnlocked = 1
     } else {
         return;
     }
-    if (points >= 40) {
+    if (points >= 40 && tabsUnlocked === 1) {
         document.getElementById('dartGun').innerHTML = "Dart Gun"
         document.getElementById('dartGun').disabled = false
+        tabsUnlocked = 2
     } else {
         return;
     }
@@ -46,7 +54,10 @@ function buy(item) {
             if (points >= (Math.floor(Math.pow(1.7, upgradesBought[0])))) {
                 addPoints(-1 * Math.floor(Math.pow(1.7, upgradesBought[0])))
                 upgradesBought[0]++
-                    buttonSpeed = buttonSpeed - buttonSpeed / 30
+                    buttonSpeed = buttonSpeed + buttonSpeed / 10
+                rect.xspeed = (120 / buttonSpeed) * (rect.xspeed / Math.abs(rect.xspeed))
+                rect.yspeed = (120 / buttonSpeed) * (rect.yspeed / Math.abs(rect.yspeed))
+                plusTexts.push([rect.x, rect.y, 1, "Speed: " + (500 / buttonSpeed).toFixed(2)])
             }
             var newCost = Math.floor(Math.pow(1.7, upgradesBought[0]))
             break;
@@ -56,6 +67,7 @@ function buy(item) {
                 upgradesBought[1]++
                     // sigmoid function, makes size level off at around 100
                     buttonSize = 46.6 / (0.4 + Math.pow(Math.E, -0.3 * upgradesBought[1])) - 14
+                plusTexts.push([rect.x, rect.y, 1, "Size: " + (buttonSize).toFixed(2)])
             }
             var newCost = Math.floor(Math.pow(3.2113, upgradesBought[1]))
             break;
@@ -65,6 +77,7 @@ function buy(item) {
                 upgradesBought[2]++
                     stunDuration = Math.pow(stunDuration, 1.014)
                 document.getElementById('stunDuration').innerHTML = (stunDuration / 1000).toFixed(2)
+                plusTexts.push([rect.x, rect.y, 1, "Stun time: " + (stunDuration / 1000).toFixed(2) + "s"])
             }
             var newCost = Math.floor(Math.pow(1.65, upgradesBought[2]))
             break;
@@ -73,6 +86,7 @@ function buy(item) {
                 addPoints(-1 * Math.floor(Math.pow(1.7, upgradesBought[3])))
                 upgradesBought[3]++
                     stunCooldown = Math.pow(stunCooldown, 0.99)
+                plusTexts.push([rect.x, rect.y, 1, "Cooldown: " + (stunCooldown / 1000).toFixed(2) + "s"])
             }
             var newCost = Math.floor(Math.pow(1.7, upgradesBought[3]))
             break;
@@ -82,6 +96,7 @@ function buy(item) {
                 upgradesBought[4]++
                     pointsValue += pointsValue;
                 ogp += ogp;
+                plusTexts.push([rect.x, rect.y, 1, "Value: " + pointsValue])
             }
             var newCost = Math.floor(10 * Math.pow(upgradesBought[4], 3.8))
             break;
@@ -90,6 +105,7 @@ function buy(item) {
                 addPoints(-1 * Math.floor(20 * Math.pow(upgradesBought[5], 1.1)))
                 upgradesBought[5]++
                     cursors.push([0, 0, 0, 1.5 * Math.random() + 0.2, 1.5 * Math.random() + 0.2])
+                plusTexts.push([rect.x, rect.y, 1, "Cursors: " + cursors.length])
             }
             var newCost = Math.floor(20 * Math.pow(upgradesBought[5], 1.1))
             break;
@@ -98,6 +114,7 @@ function buy(item) {
                 addPoints(-1 * Math.floor(12 * Math.pow(upgradesBought[6], 1.5)))
                 upgradesBought[6]++
                     cursorSpeed = Math.pow(cursorSpeed, 1.23)
+                plusTexts.push([rect.x, rect.y, 1, "Cursor speed: " + cursorSpeed.toFixed(2)])
             }
             var newCost = Math.floor(12 * Math.pow(upgradesBought[6], 1.5))
             break;
@@ -105,7 +122,8 @@ function buy(item) {
             if (points >= Math.floor(50 * Math.pow(upgradesBought[7], 1.8))) {
                 addPoints(-1 * Math.floor(50 * Math.pow(upgradesBought[7], 1.8)))
                 upgradesBought[7]++
-                    dartGuns.push([Math.random() * 600 + 25, Math.random() * 450 + 100, 0, 0, 0])
+                    dartGuns.push([Math.random() * 600 + 25, Math.random() * 400 + 100, 0, 0, 0])
+                plusTexts.push([rect.x, rect.y, 1, "Dart guns: " + dartGuns.length])
             }
             var newCost = Math.floor(50 * Math.pow(upgradesBought[7], 1.8))
             break;
@@ -113,6 +131,7 @@ function buy(item) {
             if (points >= Math.floor(40 * Math.pow(upgradesBought[8], 1.1))) {
                 addPoints(-1 * Math.floor(40 * Math.pow(upgradesBought[8], 1.1)))
                 upgradesBought[8]++
+                    plusTexts.push([rect.x, rect.y, 1, "Reload time: " + ((100 / (upgradesBought[8] / 2)) / speed).toFixed(2) + "s"])
             }
             var newCost = Math.floor(40 * Math.pow(upgradesBought[8], 1.1))
             break;
@@ -121,6 +140,7 @@ function buy(item) {
                 addPoints(-1 * Math.floor(50 * Math.pow(upgradesBought[9], 3)))
                 upgradesBought[9]++
                     gunMultiplier *= 2
+                plusTexts.push([rect.x, rect.y, 1, "Dart multiplier: x" + gunMultiplier])
             }
             var newCost = Math.floor(50 * Math.pow(upgradesBought[9], 3))
             break;

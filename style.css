@@ -2,6 +2,14 @@
     border: 2px solid black;
 }
 
+#dist {
+    width: 4em;
+}
+
+#enhancedValue {
+    width: 4em;
+}
+
 #movingButton {
     width: 30px;
     height: 30px;

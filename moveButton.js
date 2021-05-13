@@ -20,11 +20,20 @@ var rect = {
     height: buttonSize * 6,
     xspeed: 120 / buttonSpeed,
     yspeed: 120 / buttonSpeed,
-    color: '#383838'
+    color: "#383838"
 };
+canvas = document.getElementById("buttonCanvas");
+ctx = canvas.getContext("2d");
+const objGradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+objGradient.addColorStop(0, 'red');
+objGradient.addColorStop(1 / 6, 'orange');
+objGradient.addColorStop(2 / 6, 'yellow');
+objGradient.addColorStop(3 / 6, 'green')
+objGradient.addColorStop(4 / 6, 'blue');
+objGradient.addColorStop(5 / 6, 'Indigo');
+objGradient.addColorStop(1, 'Violet');
+var og = rect.color;
 (function main() {
-    canvas = document.getElementById("buttonCanvas");
-    ctx = canvas.getContext("2d");
     //Draw the "tv screen"
     canvas.width = canvasSize.x;
     canvas.height = canvasSize.y;
@@ -52,7 +61,7 @@ function update() {
         // draw button
         ctx.fillStyle = rect.color;
         ctx.fillRect(rect.x, rect.y, buttonSize * 8 * scale, buttonSize * 6 * scale);
-        //draw text
+        //draw button value text
         ctx.fillStyle = '#FFFFFF';
         ctx.font = '24px Sans-serif';
         ctx.fillText("+ " + pointsValue, rect.x + (buttonSize * 8 * scale / 2), rect.y + (buttonSize * 8 * scale / 2))
@@ -62,9 +71,9 @@ function update() {
         ctx.fillStyle = 'rgba(0, 0, 81, ' + cornerTextOpacity + ')'
         if (cornerTextOpacity > 0) { //if the "corner reached" text is not gone, make it slowly
             cornerTextOpacity -= 0.005
-            ctx.fillText("Corner frenzy!", 180, 200)
+            ctx.fillText("Corner frenzy! (x3 button value)", 300, 200)
         }
-        ctx.font = '20px Sans-serif';
+        ctx.font = '15px Sans-serif';
         for (i = 0; i < plusTexts.length; i++) { //for every fading number there is
             plusTexts[i][2] -= 0.02 //make it more transparent
             ctx.fillStyle = 'rgba(0, 0, 0, ' + plusTexts[i][2] + ')' //display transparency
@@ -95,17 +104,16 @@ function dartGunEvents() {
             bullet[i][1] >= rect.y - 10 &&
             bullet[i][1] <= rect.y + buttonSize * 6 * scale + 10 &&
             bullet[i][4] === 1) {
-            bullet[i][3] = 0;
+            bullet[i][3] = 0; // if hit button
             addPoints(pointsValue)
-            plusTexts.push([rect.x, rect.y, 1, pointsValue * gunMultiplier])
+            plusTexts.push([rect.x, rect.y, 1, pointsValue * gunMultiplier]) // add points
         }
 
-        if (bullet[i][0] + 40 >= canvasSize.x - 10 || bullet[i][0] <= 10) {
-            bullet[i][3] = 0;
-        }
-
-        if (bullet[i][1] + 5.5 >= canvasSize.y - 25 || bullet[i][1] <= 25) {
-            bullet[i][3] = 0;
+        if (bullet[i][0] + 40 >= canvasSize.x - 10 ||
+            bullet[i][0] <= 10 ||
+            bullet[i][1] + 5.5 >= canvasSize.y - 25 ||
+            bullet[i][1] <= 25) {
+            bullet[i][3] = 0; // if I hit a wall, stop the velocity
         }
         //set the bullet closer to the button, times bullet speed
         bullet[i][3] = Math.pow(bullet[i][3], 0.98) //make the velocity a little slower
@@ -137,14 +145,20 @@ function dartGunEvents() {
 
             // distY = Math.abs(rect.y - centerX); //distance to y of button
             // distX = Math.abs(rect.x - centerY); // " " but x
-            distY = (rect.y - centerY + Math.abs(rect.y - centerY) / 12 * rect.yspeed); //distance to y of button, in the future
-        distX = (rect.x - centerX + Math.abs(rect.y - centerY) / 12 * rect.xspeed); // based on how far it is
-
+            distY = (rect.y - centerY)
+        distX = (rect.x - centerX)
+            //distance + future
+        if (activeMoving && gunSettings.enhanced) {
+            distY = (rect.y - centerY + (Math.abs(distY) / gunSettings.dist * rect.yspeed) / gunSettings.enhancedVal); //distance to y of button, in the future
+            distX = (rect.x - centerX + (Math.abs(distX) / gunSettings.dist * rect.xspeed) / gunSettings.enhancedVal); // based on how far it is
+        }
         ctx.translate(centerX, centerY);
         ctx.rotate(Math.atan2(distY, distX))
+            //if the gun can fire
         if (Math.floor(dartGuns[i][3] % (100 / (upgradesBought[8] / 2))) === 0) {
             //x, y, rotation, velocity, opacity
             bullet.push([centerX, centerY, Math.atan2(distY, distX), 40, 1])
+                //fire bullet
         }
         ctx.translate(-centerX, -centerY);
         ctx.drawImage(dartGunImg, dartGuns[i][0], dartGuns[i][1], 90, 55);
@@ -216,13 +230,14 @@ function checkHitBox() {
         rect.y += rect.yspeed;
         if (didfirst) {
             //, 0%, rgba(255, 94, 0, 1) 28 % , rgba(53, 159, 39, 1) 53 % , rgba(50, 47, 255, 1) 79 % , rgba(255, 0, 236, 1) 100 % 
-            rect.color = '#00FFD5FF'
+            rect.color = objGradient
             console.log("Hit a corner!")
+            og = objGradient
             cornerTextOpacity = 1;
             ogp = pointsValue
             pointsValue *= 3
             setTimeout(() => {
-                rect.color = '#383838'
+                og = '#383838'
                 pointsValue = ogp
             }, 6000);
         }
@@ -235,12 +250,15 @@ function checkMouse() {
         currentMousePos.x <= rect.x + buttonSize * 8 * scale &&
         currentMousePos.y >= rect.y &&
         currentMousePos.y <= rect.y + buttonSize * 6 * scale) {
+        if (rect.color !== '#b8b8b8') {
+            og = rect.color
+        }
         rect.color = '#b8b8b8'
         mouseinbox = true
             //  console.log('Mouse!')
     } else {
         mouseinbox = false
-        rect.color = '#383838';
+        rect.color = og;
     }
     // console.log(currentMousePos.x + ", " + currentMousePos.y + ", Rect:" + rect.x + ", " + rect.y + ", w/h: ", rect.width * scale + ", " + buttonSize * 6 * scale)
 }

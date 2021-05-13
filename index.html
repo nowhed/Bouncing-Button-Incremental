@@ -50,7 +50,12 @@
     <p>The dart gun can give more points based on its multiplier.</p>
     <button onclick="buy('dartGun')">Buy dart gun</button> Cost: <span id="dartGunCost">50</span> points<br>
     <button onclick="buy('dartReload')">Decrease reloading time</button> Cost: <span id="dartReloadCost">40</span> points<br>
-    <button onclick="buy('gunMultiplier')">Double gun multiplier</button> Cost: <span id="gunMultiplierCost">50</span> points<br>
+    <button onclick="buy('gunMultiplier')">Double dart multiplier</button> Cost: <span id="gunMultiplierCost">50</span> points<br>
+    <br>
+    <h3>Aiming settings</h3>
+    <input oninput="gunSettings.enhanced = this.value" type="checkbox" id="enhanced"><label> Enhanced aiming (Aim at where the button will be)</label><br>
+    <input oninput="gunSettings.dist = this.value" type="number" min="1" max="99" id="dist"><label> Reduce gun to button distance aim multiplier</label><br>
+    <input oninput="gunSettings.enhancedVal = this.value" type="number" min="1" max="99" id="enhancedValue"><label> Reduce aim distance</label>
 </div>
 
 <h2>Other</h2>

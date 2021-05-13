@@ -10,7 +10,9 @@ function save() {
         cursorSpeed: cursorSpeed,
         cursors: JSON.stringify(cursors),
         dartGuns: JSON.stringify(dartGuns),
-        gunMultiplier: gunMultiplier
+        gunSettings: JSON.stringify(gunSettings),
+        gunMultiplier: gunMultiplier,
+        tabsUnlocked: tabsUnlocked
     }
     localStorage.setItem("save", JSON.stringify(save));
     plusTexts.push([canvasSize.x / 2, canvasSize.y / 2, 1, "Game saved!"])
@@ -27,11 +29,16 @@ function load() {
         if (typeof savegame.pointsValue !== "undefined") pointsValue = savegame.pointsValue;
         if (typeof savegame.upgradesBought !== "undefined") upgradesBought = JSON.parse(savegame.upgradesBought);
         if (typeof savegame.cursors !== "undefined") cursors = JSON.parse(savegame.cursors);
+        if (typeof savegame.gunSettings !== "undefined") gunSettings = JSON.parse(savegame.gunSettings);
         if (typeof savegame.cursorSpeed !== "undefined") cursorSpeed = savegame.cursorSpeed
         if (typeof savegame.dartGuns !== "undefined") dartGuns = JSON.parse(savegame.dartGuns)
         if (typeof savegame.gunMultiplier !== "undefined") gunMultiplier = savegame.gunMultiplier
-
-
+        if (typeof savegame.tabsUnlocked !== "undefined") tabsUnlocked = savegame.tabsUnlocked
+        if (gunSettings.enhanced) {
+            document.getElementById('enhanced').checked = true
+        }
+        document.getElementById('dist').value = gunSettings.dist
+        document.getElementById('enhancedValue').value = gunSettings.enhancedVal
         document.getElementById('speedCost').innerHTML = Math.floor(Math.pow(1.7, upgradesBought[0]));
         document.getElementById('sizeCost').innerHTML = Math.floor(Math.pow(3.2113, upgradesBought[1]));
         document.getElementById('stunTimeCost').innerHTML = Math.floor(Math.pow(1.65, upgradesBought[2]))
@@ -43,6 +50,14 @@ function load() {
         document.getElementById('dartGunCost').innerHTML = Math.floor(50 * Math.pow(upgradesBought[7], 1.8))
         document.getElementById('dartReloadCost').innerHTML = Math.floor(40 * Math.pow(upgradesBought[8], 1.1))
         document.getElementById('gunMultiplierCost').innerHTML = Math.floor(50 * Math.pow(upgradesBought[9], 3))
+        switch (tabsUnlocked) {
+            case 2:
+                document.getElementById('dartGun').innerHTML = "Dart Gun"
+                document.getElementById('dartGun').disabled = false
+            case 1:
+                document.getElementById('Cursors').innerHTML = "Cursors"
+                document.getElementById('Cursors').disabled = false
+        }
         addPoints(0)
     }
     console.log('Loaded!')
