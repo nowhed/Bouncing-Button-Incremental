@@ -8,9 +8,12 @@ function save() {
         pointsValue: pointsValue,
         upgradesBaught: JSON.stringify(upgradesBaught),
         cursorSpeed: cursorSpeed,
-        cursors: JSON.stringify(cursors)
+        cursors: JSON.stringify(cursors),
+        dartGuns: JSON.stringify(dartGuns),
+        gunMultiplier: gunMultiplier
     }
     localStorage.setItem("save", JSON.stringify(save));
+    plusTexts.push([canvasSize.x / 2, canvasSize.y / 2, 1, "Game saved!"])
     console.log('Saved! ' + JSON.stringify(save))
 }
 
@@ -25,20 +28,30 @@ function load() {
         if (typeof savegame.upgradesBaught !== "undefined") upgradesBaught = JSON.parse(savegame.upgradesBaught);
         if (typeof savegame.cursors !== "undefined") cursors = JSON.parse(savegame.cursors);
         if (typeof savegame.cursorSpeed !== "undefined") cursorSpeed = savegame.cursorSpeed
+        if (typeof savegame.dartGuns !== "undefined") dartGuns = JSON.parse(savegame.dartGuns)
+        if (typeof savegame.gunMultiplier !== "undefined") gunMultiplier = savegame.gunMultiplier
 
-        document.getElementById("pointsSpan").innerHTML = points;
+
         document.getElementById('speedCost').innerHTML = Math.floor(Math.pow(1.7, upgradesBaught[0]));
         document.getElementById('sizeCost').innerHTML = Math.floor(Math.pow(3.2113, upgradesBaught[1]));
         document.getElementById('stunTimeCost').innerHTML = Math.floor(Math.pow(1.65, upgradesBaught[2]))
         document.getElementById('stunCooldownCost').innerHTML = Math.floor(Math.pow(1.7, upgradesBaught[3]))
         document.getElementById('valueCost').innerHTML = Math.floor(10 * Math.pow(upgradesBaught[4], 3.8))
-        document.getElementById('cursorCost').innerHTML = Math.floor(20 * Math.pow(upgradesBaught[5], 1.2))
+        document.getElementById('cursorCost').innerHTML = Math.floor(20 * Math.pow(upgradesBaught[5], 1.1))
         document.getElementById('cursorSpeedCost').innerHTML = Math.floor(12 * Math.pow(upgradesBaught[6], 1.5))
         document.getElementById('stunDuration').innerHTML = (stunDuration / 1000).toFixed(2)
+        document.getElementById('dartGunCost').innerHTML = Math.floor(50 * Math.pow(upgradesBaught[7], 1.8))
+        document.getElementById('dartReloadCost').innerHTML = Math.floor(40 * Math.pow(upgradesBaught[8], 1.1))
+        document.getElementById('gunMultiplierCost').innerHTML = Math.floor(50 * Math.pow(upgradesBaught[9], 1.7))
+        addPoints(0)
     }
     console.log('Loaded! ' + localStorage.getItem("save"))
 }
+autoSave()
 
-setTimeout(() => {
-    save()
-}, 15000); //save every 15s
+function autoSave() {
+    setTimeout(() => {
+        save()
+        autoSave()
+    }, 20000); //save every 15s
+}

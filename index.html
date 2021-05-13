@@ -7,11 +7,7 @@
 <head>
 
 </head>
-<!--<marquee behavior="alternate" direction="down" width="100%" height="100%">
-        <marquee behavior="alternate" width="100%" id="buttonMarq">
-            <button onClick="addPoints(pointsValue)" id="movingButton">+1</button>
-        </marquee>
-    </marquee> -->
+
 <canvas id="buttonCanvas"></canvas>
 <!--all the button stuff happens within this canvas-->
 <br>
@@ -31,11 +27,32 @@
 <button onclick="buy('size')">Increase button size</button> Cost: <span id="sizeCost">3</span> points<br>
 <button onclick="buy('stunTime')">Increase stun time</button> Cost: <span id="stunTimeCost">1</span> points<br>
 <button onclick="buy('stunCooldown')">Reduce stun cooldown</button> Cost: <span id="stunCooldownCost">1</span> points<br>
-<button onclick="buy('value')">Double button value</button> Cost: <span id="valueCost">10</span> points<br>
-<p>Cursors chase after the button and click it for you. A cursor's speed is above itself.</p>
-<p>A cursor can't go faster than the button. When a cursor clicks the button, it gains a little speed as a reward.</p>
-<button onclick="buy('cursor')">Buy cursor</button> Cost: <span id="cursorCost">20</span> points<br>
-<button onclick="buy('cursorSpeed')">Increase cursor speed</button> Cost: <span id="cursorSpeedCost">12</span> points<br>
+<button onclick="buy('value')">Double button value</button> Cost: <span id="valueCost">10</span> points<br><br>
+
+<!--tab buttons sections-->
+<h2>Automation</h2>
+<div class="tab">
+    <!--Cursors-->
+    <button id="Cursors" class="tablinks" onclick="swapTab(event, 'CursorsDiv')" disabled>Req: 15 points</button>
+    <!--Dart gun-->
+    <button id="dartGun" class="tablinks" onclick="swapTab(event, 'dartGunDiv')" disabled>Req: 40 points</button>
+</div>
+
+<div id="CursorsDiv" class="tabcontent">
+    <p>Cursors chase after the button and click it for you. A cursor's speed is above itself.</p>
+    <p>A cursor can't go faster than the button. When a cursor clicks the button, it gains a little speed as a reward.</p>
+    <button onclick="buy('cursor')">Buy cursor</button> Cost: <span id="cursorCost">20</span> points<br>
+    <button onclick="buy('cursorSpeed')">Increase cursor speed</button> Cost: <span id="cursorSpeedCost">12</span> points<br>
+</div>
+
+<div id="dartGunDiv" class="tabcontent">
+    <p>Dart guns stay in place, aiming and shooting at the button.</p>
+    <p>The dart gun can give more points based on its multiplier.</p>
+    <button onclick="buy('dartGun')">Buy dart gun</button> Cost: <span id="dartGunCost">50</span> points<br>
+    <button onclick="buy('dartReload')">Decrease reloading time</button> Cost: <span id="dartReloadCost">40</span> points<br>
+    <button onclick="buy('gunMultiplier')">Double gun multiplier</button> Cost: <span id="gunMultiplierCost">50</span> points<br>
+</div>
+
 <h2>Other</h2>
 <button onclick="save()">Save</button><br>
 <button onclick="load()">Load</button><br>

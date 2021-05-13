@@ -1,7 +1,7 @@
 let scale = 0.17; // Image scale (I work on 1080p monitor)
 let canvas;
 let ctx;
-let speed = 24;
+let speed = 30;
 let borderThickness = 6;
 var currentMousePos = { x: -1, y: -1 };
 var cornerTextOpacity = 0;
@@ -10,6 +10,8 @@ var down = false;
 var mouseinbox = false;
 var mouseMoving = false;
 var cursorImg = new Image();
+var bulletImg = new Image();
+var dartGunImg = new Image();
 //x, y, opacity
 var plusTexts = []
 var rect = {
@@ -29,7 +31,7 @@ var rect = {
     canvas.addEventListener('click', function(event) {
         if (mouseinbox) {
             addPoints(pointsValue)
-            plusTexts.push([rect.x, rect.y, 1])
+            plusTexts.push([rect.x, rect.y, 1, pointsValue])
         }
     })
     window.setInterval(update, speed);
@@ -66,7 +68,7 @@ function update() {
         for (i = 0; i < plusTexts.length; i++) { //for every fading number there is
             plusTexts[i][2] -= 0.02 //make it more transparent
             ctx.fillStyle = 'rgba(0, 0, 0, ' + plusTexts[i][2] + ')' //display transparency
-            ctx.fillText(pointsValue, plusTexts[i][0], plusTexts[i][1]) //display
+            ctx.fillText(plusTexts[i][3], plusTexts[i][0], plusTexts[i][1]) //display
             plusTexts[i][1] += -1 //make it go up
             if (plusTexts[i][2] <= 0) plusTexts.splice(i, 1) //if it's transparent, get rid of it
         }
@@ -76,16 +78,89 @@ function update() {
         }
         //Check for collision 
         cursorEvents();
+        dartGunEvents();
         checkHitBox();
     }, speed)
 }
 
+function dartGunEvents() {
+    //render bullets
+    for (i = 0; i < bullet.length; i++) {
+        ctx.save();
+        //x, y, rotation, velocity, opacity
+        //0, 1, 2,        3,        4
+        //if hit box, add points and stop
+        if (bullet[i][0] >= rect.x - 10 &&
+            bullet[i][0] <= rect.x + buttonSize * 8 * scale + 10 &&
+            bullet[i][1] >= rect.y - 10 &&
+            bullet[i][1] <= rect.y + buttonSize * 6 * scale + 10 &&
+            bullet[i][4] === 1) {
+            bullet[i][3] = 0;
+            addPoints(pointsValue)
+            plusTexts.push([rect.x, rect.y, 1, pointsValue * gunMultiplier])
+        }
+
+        if (bullet[i][0] + 40 >= canvasSize.x - 10 || bullet[i][0] <= 10) {
+            bullet[i][3] = 0;
+        }
+
+        if (bullet[i][1] + 5.5 >= canvasSize.y - 25 || bullet[i][1] <= 25) {
+            bullet[i][3] = 0;
+        }
+        //set the bullet closer to the button, times bullet speed
+        bullet[i][3] = Math.pow(bullet[i][3], 0.98) //make the velocity a little slower
+        bullet[i][0] += (bullet[i][3] - 1) * Math.cos(bullet[i][2]); // move fowards
+        bullet[i][1] += (bullet[i][3] - 1) * Math.sin(bullet[i][2]); // move fowards
+        ctx.translate(bullet[i][0], bullet[i][1]);
+        ctx.rotate(bullet[i][2]) //rotate same direction as gun
+        ctx.translate(-bullet[i][0], -bullet[i][1]);
+        //draw bullet
+        ctx.globalAlpha = bullet[i][4];
+        ctx.drawImage(bulletImg, bullet[i][0], bullet[i][1], 40, 5.5)
+        ctx.globalAlpha = 1;
+        ctx.restore();
+        if (bullet[i][3] < 2.5) { //is slower than 1.5/tick?
+            bullet[i][4] -= 0.08 //start fading out
+        }
+        if (bullet[i][4] < 0.05) { //opacity < 0.05?
+            bullet.splice(i, 1) //delete this bullet
+        }
+    }
+    // render every dart gun
+    for (i = 0; i < dartGuns.length; i++) {
+        ctx.save();
+        centerX = dartGuns[i][0] + 50
+        centerY = dartGuns[i][1] + 10.5
+            // 0:x, 1:y, 2:rotation, 3:reload progress, 4:rotate velocity
+        dartGuns[i][3]++
+
+            // distY = Math.abs(rect.y - centerX); //distance to y of button
+            // distX = Math.abs(rect.x - centerY); // " " but x
+            distY = (rect.y - centerY + Math.abs(rect.y - centerY) / 12 * rect.yspeed); //distance to y of button, in the future
+        distX = (rect.x - centerX + Math.abs(rect.y - centerY) / 12 * rect.xspeed); // based on how far it is
+
+        ctx.translate(centerX, centerY);
+        ctx.rotate(Math.atan2(distY, distX))
+        if (dartGuns[i][3] % (100 / (upgradesBaught[8] / 2)) === 0) {
+            //x, y, rotation, velocity, opacity
+            bullet.push([centerX, centerY, Math.atan2(distY, distX), 40, 1])
+        }
+        ctx.translate(-centerX, -centerY);
+        ctx.drawImage(dartGunImg, dartGuns[i][0], dartGuns[i][1], 90, 55);
+        ctx.restore();
+        ctx.fillStyle = "black";
+        ctx.font = '15px Sans-serif';
+        //add a text box above, showing time before firing
+        ctx.fillText((((100 / (upgradesBaught[8] / 2)) - dartGuns[i][3] % (100 / (upgradesBaught[8] / 2))) / speed).toFixed(2) + "s",
+            dartGuns[i][0] + 50, dartGuns[i][1] - 50)
+    }
+}
 
 function cursorEvents() {
-    for (i = 0; i < cursors.length; i++) { //for the cursors in cursrs
+    for (i = 0; i < cursors.length; i++) { //for the cursors in cursors
         // calculate distance and diret
-        cursorSigX = (1.05 * buttonSpeed / (1 + Math.pow(Math.E, -cursors[i][3] * 0.3))) - buttonSpeed / 2
-        cursorSigY = (1.05 * buttonSpeed / (1 + Math.pow(Math.E, -cursors[i][4] * 0.3))) - buttonSpeed / 2
+        cursorSigX = (1.04 * buttonSpeed / (1 + Math.pow(Math.E, -cursors[i][3] * 0.3))) - buttonSpeed / 1.9
+        cursorSigY = (1.04 * buttonSpeed / (1 + Math.pow(Math.E, -cursors[i][4] * 0.3))) - buttonSpeed / 1.9
 
         cspeedX = cursorSpeed * cursorSigX
         cspeedY = cursorSpeed * cursorSigY
@@ -109,7 +184,7 @@ function cursorEvents() {
             //increase the "cursor click progress" by 1
             if (cursors[i][2] % Math.floor(120 / cursorSpeed) === 0) { //got a click!
                 addPoints(pointsValue)
-                plusTexts.push([rect.x, rect.y, 1])
+                plusTexts.push([rect.x, rect.y, 1, pointsValue])
                     //give a little bonus to this cursor's speed, as a reward
                     // sigmoid. 450 * buttonspeed /E^-0.3*cursor speed
                 cursors[i][3] += cursors[i][3] / 16
@@ -174,3 +249,5 @@ function findMouse(e) {
 }
 document.getElementById('buttonCanvas').addEventListener("mousemove", findMouse)
 cursorImg.src = "./cursor.png";
+bulletImg.src = "./bullet.png";
+dartGunImg.src = "./dartgun.png";
