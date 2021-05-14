@@ -1,5 +1,5 @@
 var points = 0;
-var buttonSpeed = 10;
+var buttonSpeed = 20;
 var upgradesBought = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
 var stunDuration = 700; // 0.7s
 var stunCooldown = 7000; // 7s + the stun duration, 7 seconds so platers aren't too reliant on it
