@@ -53,7 +53,7 @@ function buy(item) {
                     buttonSpeed = buttonSpeed + buttonSpeed / 10
                 rect.xspeed = (120 / buttonSpeed) * (rect.xspeed / Math.abs(rect.xspeed))
                 rect.yspeed = (120 / buttonSpeed) * (rect.yspeed / Math.abs(rect.yspeed))
-                plusTexts.push([rect.x, rect.y, 1, "Speed: " + (500 / buttonSpeed).toFixed(2)])
+                plusTexts.push([rect.x + buttonSize * 8 * scale * Math.random(), rect.y + buttonSize * 6 * scale * Math.random(), 1, "Speed: " + (500 / buttonSpeed).toFixed(2)])
             }
             var newCost = Math.floor(Math.pow(1.7, upgradesBought[0]))
             break;
@@ -63,7 +63,7 @@ function buy(item) {
                 upgradesBought[1]++
                     // sigmoid function, makes size level off at around 100
                     buttonSize = 46.6 / (0.4 + Math.pow(Math.E, -0.3 * upgradesBought[1])) - 14
-                plusTexts.push([rect.x, rect.y, 1, "Size: " + (buttonSize).toFixed(2)])
+                plusTexts.push([rect.x + buttonSize * 8 * scale * Math.random(), rect.y + buttonSize * 6 * scale * Math.random(), 1, "Size: " + (buttonSize).toFixed(2)])
             }
             var newCost = Math.floor(Math.pow(3.2113, upgradesBought[1]))
             break;
@@ -73,7 +73,7 @@ function buy(item) {
                 upgradesBought[2]++
                     stunDuration = Math.pow(stunDuration, 1.014)
                 document.getElementById('stunDuration').innerHTML = (stunDuration / 1000).toFixed(2)
-                plusTexts.push([rect.x, rect.y, 1, "Stun time: " + (stunDuration / 1000).toFixed(2) + "s"])
+                plusTexts.push([rect.x + buttonSize * 8 * scale * Math.random(), rect.y + buttonSize * 6 * scale * Math.random(), 1, "Stun time: " + (stunDuration / 1000).toFixed(2) + "s"])
             }
             var newCost = Math.floor(Math.pow(1.65, upgradesBought[2]))
             break;
@@ -82,7 +82,7 @@ function buy(item) {
                 addPoints(-1 * Math.floor(Math.pow(1.7, upgradesBought[3])))
                 upgradesBought[3]++
                     stunCooldown = Math.pow(stunCooldown, 0.99)
-                plusTexts.push([rect.x, rect.y, 1, "Cooldown: " + (stunCooldown / 1000).toFixed(2) + "s"])
+                plusTexts.push([rect.x + buttonSize * 8 * scale * Math.random(), rect.y + buttonSize * 6 * scale * Math.random(), 1, "Cooldown: " + (stunCooldown / 1000).toFixed(2) + "s"])
             }
             var newCost = Math.floor(Math.pow(1.7, upgradesBought[3]))
             break;
@@ -92,7 +92,7 @@ function buy(item) {
                 upgradesBought[4]++
                     pointsValue += pointsValue;
                 ogp += ogp;
-                plusTexts.push([rect.x, rect.y, 1, "Value: " + pointsValue])
+                plusTexts.push([rect.x + buttonSize * 8 * scale * Math.random(), rect.y + buttonSize * 6 * scale * Math.random(), 1, "Value: " + pointsValue])
             }
             var newCost = Math.floor(10 * Math.pow(upgradesBought[4], 3.8))
             break;
@@ -101,7 +101,7 @@ function buy(item) {
                 addPoints(-1 * Math.floor(20 * Math.pow(upgradesBought[5], 1.05)))
                 upgradesBought[5]++
                     cursors.push([0, 0, 0, 1.5 * Math.random() + 0.2, 1.5 * Math.random() + 0.2])
-                plusTexts.push([rect.x, rect.y, 1, "Cursors: " + cursors.length])
+                plusTexts.push([rect.x + buttonSize * 8 * scale * Math.random(), rect.y + buttonSize * 6 * scale * Math.random(), 1, "Cursors: " + cursors.length])
             }
             var newCost = Math.floor(20 * Math.pow(upgradesBought[5], 1.05))
             break;
@@ -110,7 +110,7 @@ function buy(item) {
                 addPoints(-1 * Math.floor(12 * Math.pow(upgradesBought[6], 1.5)))
                 upgradesBought[6]++
                     cursorSpeed = Math.pow(cursorSpeed, 1.23)
-                plusTexts.push([rect.x, rect.y, 1, "Cursor speed: " + cursorSpeed.toFixed(2)])
+                plusTexts.push([rect.x + buttonSize * 8 * scale * Math.random(), rect.y + buttonSize * 6 * scale * Math.random(), 1, "Cursor speed: " + cursorSpeed.toFixed(2)])
             }
             var newCost = Math.floor(12 * Math.pow(upgradesBought[6], 1.5))
             break;
@@ -119,24 +119,24 @@ function buy(item) {
                 addPoints(-1 * Math.floor(50 * Math.pow(upgradesBought[7], 1.8)))
                 upgradesBought[7]++
                     dartGuns.push([Math.random() * 600 + 25, Math.random() * 400 + 100, 0, 0, 0])
-                plusTexts.push([rect.x, rect.y, 1, "Dart guns: " + dartGuns.length])
+                plusTexts.push([rect.x + buttonSize * 8 * scale * Math.random(), rect.y + buttonSize * 6 * scale * Math.random(), 1, "Dart guns: " + dartGuns.length])
             }
             var newCost = Math.floor(50 * Math.pow(upgradesBought[7], 1.8))
             break;
         case "dartReload":
-            if (points >= Math.floor(40 * Math.pow(upgradesBought[8], 1.1))) {
-                addPoints(-1 * Math.floor(40 * Math.pow(upgradesBought[8], 1.1)))
+            if (points >= Math.floor(40 * Math.pow(upgradesBought[8], 1.8))) {
+                addPoints(-1 * Math.floor(40 * Math.pow(upgradesBought[8], 1.8)))
                 upgradesBought[8]++
-                    plusTexts.push([rect.x, rect.y, 1, "Reload time: " + ((100 / (upgradesBought[8] / 3)) / speed).toFixed(2) + "s"])
+                    plusTexts.push([rect.x + buttonSize * 8 * scale * Math.random(), rect.y + buttonSize * 6 * scale * Math.random(), 1, "Reload time: " + ((100 / (upgradesBought[8] / 3)) / speed).toFixed(2) + "s"])
             }
-            var newCost = Math.floor(40 * Math.pow(upgradesBought[8], 1.1))
+            var newCost = Math.floor(40 * Math.pow(upgradesBought[8], 1.8))
             break;
         case "gunMultiplier":
             if (points >= Math.floor(50 * Math.pow(upgradesBought[9], 3))) {
                 addPoints(-1 * Math.floor(50 * Math.pow(upgradesBought[9], 3)))
                 upgradesBought[9]++
                     gunMultiplier *= 2
-                plusTexts.push([rect.x, rect.y, 1, "Dart multiplier: x" + gunMultiplier])
+                plusTexts.push([rect.x + buttonSize * 8 * scale * Math.random(), rect.y + buttonSize * 6 * scale * Math.random(), 1, "Dart multiplier: x" + gunMultiplier])
             }
             var newCost = Math.floor(50 * Math.pow(upgradesBought[9], 3))
             break;

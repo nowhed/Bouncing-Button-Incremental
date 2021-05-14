@@ -49,7 +49,7 @@ function load() {
         document.getElementById('cursorSpeedCost').innerHTML = Math.floor(12 * Math.pow(upgradesBought[6], 1.5))
         document.getElementById('stunDuration').innerHTML = (stunDuration / 1000).toFixed(2)
         document.getElementById('dartGunCost').innerHTML = Math.floor(50 * Math.pow(upgradesBought[7], 1.8))
-        document.getElementById('dartReloadCost').innerHTML = Math.floor(40 * Math.pow(upgradesBought[8], 1.1))
+        document.getElementById('dartReloadCost').innerHTML = Math.floor(40 * Math.pow(upgradesBought[8], 1.8))
         document.getElementById('gunMultiplierCost').innerHTML = Math.floor(50 * Math.pow(upgradesBought[9], 3))
         switch (tabsUnlocked) {
             case 2:

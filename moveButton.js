@@ -40,7 +40,7 @@ var og = rect.color;
     canvas.addEventListener('click', function(event) {
         if (mouseinbox) {
             addPoints(pointsValue)
-            plusTexts.push([rect.x, rect.y, 1, pointsValue])
+            plusTexts.push([rect.x + buttonSize * 8 * scale * Math.random(), rect.y + buttonSize * 6 * scale * Math.random(), 1, pointsValue])
         }
     })
     window.setInterval(update, speed);
@@ -106,7 +106,7 @@ function dartGunEvents() {
             bullet[i][4] === 1) {
             bullet[i][3] = 0; // if hit button
             addPoints(pointsValue)
-            plusTexts.push([rect.x, rect.y, 1, pointsValue * gunMultiplier]) // add points
+            plusTexts.push([rect.x + buttonSize * 8 * scale * Math.random(), rect.y + buttonSize * 6 * scale * Math.random(), 1, pointsValue * gunMultiplier]) // add points
         }
 
         if (bullet[i][0] + 40 >= canvasSize.x - 10 ||
@@ -205,7 +205,7 @@ function cursorEvents() {
             //increase the "cursor click progress" by 1
             if (cursors[i][2] % Math.floor(120 / cursorSpeed) === 0) { //got a click!
                 addPoints(pointsValue)
-                plusTexts.push([rect.x, rect.y, 1, pointsValue])
+                plusTexts.push([rect.x + buttonSize * 8 * scale * Math.random(), rect.y + buttonSize * 6 * scale, 1, pointsValue])
                     //give a little bonus to this cursor's speed, as a reward
                     // sigmoid. 450 * buttonspeed /E^-0.3*cursor speed
                 cursors[i][3] += cursors[i][3] / 16
