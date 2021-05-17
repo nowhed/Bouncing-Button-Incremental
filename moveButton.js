@@ -1,7 +1,7 @@
 let scale = 0.17; // Image scale (I work on 1080p monitor)
 let canvas;
 let ctx;
-let speed = 30;
+let speed = 35;
 let borderThickness = 6;
 var currentMousePos = { x: -1, y: -1 };
 var cornerTextOpacity = 0;
@@ -155,7 +155,7 @@ function dartGunEvents() {
         ctx.translate(centerX, centerY);
         ctx.rotate(Math.atan2(distY, distX))
             //if the gun can fire
-        if (Math.floor(dartGuns[i][3] % (100 / (upgradesBought[8] / 3))) === 0) {
+        if (Math.floor(dartGuns[i][3] % (110 / Math.pow(upgradesBought[8], 0.2))) === 0) {
             //x, y, rotation, velocity, opacity
             bullet.push([centerX, centerY, Math.atan2(distY, distX), 40, 1])
                 //fire bullet
@@ -166,7 +166,7 @@ function dartGunEvents() {
         ctx.fillStyle = "black";
         ctx.font = '15px Sans-serif';
         //add a text box above, showing time before firing
-        ctx.fillText((((100 / (upgradesBought[8] / 3)) - dartGuns[i][3] % (100 / (upgradesBought[8] / 3))) / speed).toFixed(2) + "s",
+        ctx.fillText((((110 / Math.pow(upgradesBought[8], 0.2)) - dartGuns[i][3] % (110 / Math.pow(upgradesBought[8], 0.2))) / speed).toFixed(2) + "s",
             dartGuns[i][0] + 50, dartGuns[i][1] - 50)
     }
     ctx.globalAlpha = 1;
@@ -177,22 +177,18 @@ function cursorEvents() {
         // calculate distance and diret
         cursorSigX = Math.abs((1.04 * buttonSpeed / (1 + Math.pow(Math.E, -cursors[i][3] * 0.2))) - buttonSpeed / 1.9)
         cursorSigY = Math.abs((1.04 * buttonSpeed / (1 + Math.pow(Math.E, -cursors[i][4] * 0.2))) - buttonSpeed / 1.9)
-        while (cursorSigX > 120 / buttonSpeed) {
-            cursorSigX = cursorSigX * (cursors[i][3] - Math.floor(cursors[i][3]))
-        }
-        while (cursorSigY > 120 / buttonSpeed) {
-            cursorSigY = cursorSigY * (cursors[i][4] - Math.floor(cursors[i][4]))
-        }
         cspeedX = cursorSpeed * cursorSigX
         cspeedY = cursorSpeed * cursorSigY
         toButtonX = rect.x + buttonSize * 4 * scale - cursors[i][0]
         toButtonY = rect.y + buttonSize * 3 * scale - cursors[i][1]
         toButtonLength = Math.sqrt(toButtonX * toButtonX + toButtonY * toButtonY);
-        toButtonX = toButtonX / toButtonLength;
-        toButtonY = toButtonY / toButtonLength;
-        //set the cursor closer to the button, times cursor speed
-        cursors[i][0] += toButtonX * cspeedX
-        cursors[i][1] += toButtonY * cspeedY
+        if (toButtonLength > 2) {
+            toButtonX = toButtonX / toButtonLength;
+            toButtonY = toButtonY / toButtonLength;
+            //set the cursor closer to the button, times cursor speed
+            cursors[i][0] += toButtonX * cspeedX
+            cursors[i][1] += toButtonY * cspeedY
+        }
         ctx.fillStyle = "black";
         ctx.font = '15px Sans-serif';
         //add a text box above, showing this cursor's speed
@@ -203,18 +199,26 @@ function cursorEvents() {
             cursors[i][1] >= rect.y &&
             cursors[i][1] <= rect.y + buttonSize * 6 * scale) {
             //increase the "cursor click progress" by 1
-            if (cursors[i][2] % Math.floor(120 / cursorSpeed) === 0) { //got a click!
+            if (cursors[i][2] % Math.floor(100 / cursorSpeed) === 0) { //got a click!
                 addPoints(pointsValue)
                 plusTexts.push([rect.x + buttonSize * 8 * scale * Math.random(), rect.y + buttonSize * 6 * scale, 1, pointsValue])
                     //give a little bonus to this cursor's speed, as a reward
                     // sigmoid. 450 * buttonspeed /E^-0.3*cursor speed
-                cursors[i][3] += cursors[i][3] / 16
-                cursors[i][4] += cursors[i][4] / 16
-                    //if a cursor is faster than the button, penalize it.
+                if (cursorSigX < 120 / buttonSpeed - 0.2) {
+                    cursors[i][3] += cursors[i][3] / 20
+                } else {
+                    cursors[i][3] += (cursors[i][3] / 32) * (Math.random() - 0.5)
+                }
+                if (cursorSigY < 120 / buttonSpeed - 0.2) {
+                    cursors[i][4] += cursors[i][4] / 20
+                } else {
+                    cursors[i][4] += (cursors[i][4] / 32) * (Math.random() - 0.5)
+                }
+                //if a cursor is faster than the button, penalize it.
             }
             cursors[i][2]++
         } else {
-            cursors[i][2] = Math.floor(120 / cursorSpeed)
+            cursors[i][2] = Math.floor(100 / cursorSpeed)
         }
     }
 }

@@ -15,12 +15,12 @@ function save() {
         tabsUnlocked: tabsUnlocked
     }
     localStorage.setItem("save", JSON.stringify(save));
-    plusTexts.push([canvasSize.x / 2, canvasSize.y / 2, 1, "Game saved!"])
     console.log('Saved!')
 }
 
 function load() {
     var savegame = JSON.parse(localStorage.getItem("save"));
+    console.log(savegame)
     if (savegame !== null) {
         if (typeof savegame.points !== "undefined") points = savegame.points;
         if (typeof savegame.buttonSpeed !== "undefined") buttonSpeed = savegame.buttonSpeed;
@@ -38,19 +38,22 @@ function load() {
         if (gunSettings.enhanced) {
             document.getElementById('enhanced').checked = true
         }
+
         document.getElementById('dist').value = gunSettings.dist
         document.getElementById('enhancedValue').value = gunSettings.enhancedVal
-        document.getElementById('speedCost').innerHTML = Math.floor(Math.pow(1.7, upgradesBought[0]));
-        document.getElementById('sizeCost').innerHTML = Math.floor(Math.pow(3.2113, upgradesBought[1]));
-        document.getElementById('stunTimeCost').innerHTML = Math.floor(Math.pow(1.65, upgradesBought[2]))
-        document.getElementById('stunCooldownCost').innerHTML = Math.floor(Math.pow(1.7, upgradesBought[3]))
-        document.getElementById('valueCost').innerHTML = Math.floor(10 * Math.pow(upgradesBought[4], 3.8))
-        document.getElementById('cursorCost').innerHTML = Math.floor(20 * Math.pow(upgradesBought[5], 1.05))
-        document.getElementById('cursorSpeedCost').innerHTML = Math.floor(12 * Math.pow(upgradesBought[6], 1.5))
-        document.getElementById('stunDuration').innerHTML = (stunDuration / 1000).toFixed(2)
-        document.getElementById('dartGunCost').innerHTML = Math.floor(50 * Math.pow(upgradesBought[7], 1.8))
-        document.getElementById('dartReloadCost').innerHTML = Math.floor(40 * Math.pow(upgradesBought[8], 1.8))
-        document.getElementById('gunMultiplierCost').innerHTML = Math.floor(50 * Math.pow(upgradesBought[9], 3))
+        for (i = 0; i < upgradesBought.length; i++) {
+            // a bit complex, but automates any new items I add to the shop. Explanation below
+            document.getElementById(Object.keys(shopPrices)[i] + "Cost").innerHTML = Math.floor(Object.values(shopSV)[i] * Math.pow(Object.values(shopPrices)[i], upgradesBought[i]))
+                /* First, the price element is found by finding the name of the current "i" plus the word "Cost"
+                    Object.keys(shopPrices)[i] + "Cost"
+                    Next, the price is calculated by finding the base value
+                    Object.values(shopSV)[i]
+                    multiplied by the current price increase
+                    Math.pow(Object.values(shopPrices)[i], upgradesBought[i])
+                    which is the price increase value to the power of the current amount bought.
+                */
+        }
+
         switch (tabsUnlocked) {
             case 2:
                 document.getElementById('dartGun').innerHTML = "Dart Gun"
@@ -60,14 +63,24 @@ function load() {
                 document.getElementById('Cursors').disabled = false
         }
         addPoints(0)
+        d = new Date();
+        logText.push('Loaded at ' + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds())
+    } else {
+        logText.push('No save file found.')
+        logText.push('Tutorial.exe initiated.')
+        logText.push('25% loaded')
+        logText.push('58% loaded')
+        logText.push('99% loaded')
+        logText.push('99.9% loaded')
+        logText.push('99.99% loaded')
+        logText.push('99.999% loaded')
+        logText.push('99.9999% loaded')
+        logText.push('Bouncing Button Tutorial:')
+        logText.push('Click the button to get points.')
+        logText.push("If it's too diffcult, press 's' to stun it.")
+        logText.push('Upgrade using the shop below, spending your points.')
+        logText.push('Eventually you will unlock ways of automating point gain.')
+        logText.push('After a certain amount of points, you can reset all your progress for a boost.')
+        logText.push('Good luck, and have fun!')
     }
-    console.log('Loaded!')
-}
-autoSave()
-
-function autoSave() {
-    setTimeout(() => {
-        save()
-        autoSave()
-    }, 20000); //save every 15s
 }

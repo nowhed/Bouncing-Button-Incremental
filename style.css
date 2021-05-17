@@ -3,6 +3,26 @@
     user-select: none;
 }
 
+#log {
+    overflow-y: scroll;
+    text-align: justify;
+    position: absolute;
+    font-family: monospace;
+    font-size: 18px;
+    border: 2px solid black;
+    padding: 10px;
+    width: 350px;
+    height: 530px;
+    margin: 550px;
+    top: -470px;
+    left: 180px;
+    user-select: none;
+}
+
+#log::-webkit-scrollbar {
+    display: none;
+}
+
 #dist {
     width: 4em;
 }
